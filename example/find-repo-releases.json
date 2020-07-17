@@ -1,0 +1,9 @@
+{
+  "list release":{
+    "api": "GET /repos/:owner/:repo/releases"
+    
+  },
+  "get a release": {
+    "api": "GET /repos/:owner/:repo/releases/:release_id"
+  }
+}

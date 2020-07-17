@@ -52,7 +52,7 @@ Suppose we have `api.json` looks like:
 (github-api-doc:read-api-json #P"/path/to/api.json")
 ```
 
-### Generate api instance###
+### Generate api instance ###
 
 After read api.json file, you can generate api instance by using `github-api-doc:make-api-doc-from-json`
 
@@ -141,7 +141,7 @@ As example shows, `:username` fills api slot, `:type` & `:direction` fill parame
 
 ### Authorization ###
 
-** Token, user-name&passd **
+**Token, user-name&passd**
 
 When you need authorization, you can put `:token`, `:user-name` and `:passd` in `github-client:github-api-call` as keywords. 
 

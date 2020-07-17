@@ -1,0 +1,25 @@
+{
+    "repositories": {
+        "repositories": {
+          "List repositories for a user": {
+                "parameters": [
+                  ["type", "string"],
+                  ["sort","string"],
+                  ["direction","string"]
+                ],
+                "api": "GET /users/:username/repos",
+                "link": "https://developer.github.com/v3/repos/#list-repositories-for-a-user"
+            }
+        }
+    },
+    "activity": {
+        "events": {
+            "List public events": {
+                "api": "GET /events"
+            },
+            "List repository events": {
+                "api": "GET /repos/:owner/:repo/events"
+            }
+        }
+    }
+}

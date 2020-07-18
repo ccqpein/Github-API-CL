@@ -48,6 +48,7 @@
            (token (token clt) token-p)
            (user-name "")
            (passd "" passd-p)
+           (proxy "" proxy-p)
            &allow-other-keys)
         args
       (let ((lambda-list '())
@@ -66,7 +67,14 @@
           (passd-p
            (setf lambda-list
                  (append lambda-list
-                         (list :basic-auth (cons user-name passd))))))
+                         (list :basic-auth (cons user-name passd)))))
+
+          ;; give proxy
+          (proxy-p
+           (setf lambda-list
+                 (append lambda-list
+                         (list :proxy proxy :insecure t))))
+          )
 
         (apply call-func url lambda-list)
         ))))

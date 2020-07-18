@@ -70,9 +70,8 @@
                                     (http-call clt
                                                "http://127.0.0.1:5000"
                                                :user-name "aa"
-                                               :passd "bb"))))
-
-                )
+                                               :passd "bb")))))
+      
       (clack:stop handler))))
 
 (let ((*print-errors* t)

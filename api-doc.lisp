@@ -213,7 +213,7 @@ url"
               ))
     ;; make parameters
     (format parameters-str
-            "?~{~#[~:;~{~a=~s~}~#[~:;&~]~]~}"
+            "?~{~#[~:;~{~a=~a~}~#[~:;&~]~]~}"
             ;; clean all list if value is empty or nil
             (loop
               ;; check the value legal or not. Clean nil and ""

@@ -105,7 +105,7 @@ Making github-api client:
 (defparameter *client-without-token* (make-instance 'github-client:api-client))
 
 ;; if you have token for github rest api call, make like this
-(defparameter *client-with-token* (make-instance 'github-client:api-client :token "123))
+(defparameter *client-with-token* (make-instance 'github-client:api-client :token "123"))
 ```
 
 ### Call api ###

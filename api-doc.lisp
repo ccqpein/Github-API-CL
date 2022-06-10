@@ -12,7 +12,7 @@
 (in-package #:github-api-doc)
 
 (defparameter *api-root-url* "https://api.github.com")
-(defparameter *api-json-file-path*
+(defparameter *api-json-file-path* 
   (merge-pathnames (asdf:component-pathname
                     (asdf:find-system :github-api-cl))
                    #P"/api.json")

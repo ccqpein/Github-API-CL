@@ -28,15 +28,11 @@
   :long-description
   #.(uiop:read-file-string
      (uiop:subpathname *load-pathname* "README.md"))
-  )
-
-(defmethod perform ((o test-op) (c (eql (find-system :github-api-cl))))
-  (load-system :github-api-cl/tests)
-  ;;(oos 'test-op :github-api-cl/tests)
+  :in-order-to ((test-op (test-op "github-api-cl/tests")))
   )
 
 (defsystem github-api-cl/tests
-  :defsystem-depends-on ("lisp-unit"
-                         "github-api-cl")
+  :depends-on ("github-api-cl" "lisp-unit")
   :components ((:file "api-doc-test")
-               (:file "client-test")))
+               (:file "client-test"))
+  )

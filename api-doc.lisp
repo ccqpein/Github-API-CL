@@ -57,7 +57,6 @@ object"
    ;; ((para, type)...)
    (parameters
     :initarg :parameters
-    :initform '()
     :type cons
     :accessor parameters)))
 
@@ -133,12 +132,10 @@ url"
     (the string (get-output-stream-string result))
     ))
 
-(declaim (inline parse-keys))
 (defun parse-keys (args)
   "for make parse keywords function, make flexible of keywords input"
   (if (not (evenp (length args)))
-      (return-from
-       parse-keys (error "args length should be even")))
+      (error "args length should be even"))
   
   (let ((keywords-pairs (loop
                           for i from 2 to (length args) by 2

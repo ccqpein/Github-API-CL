@@ -36,6 +36,7 @@
   )
 
 (defsystem github-api-cl/tests
-  :defsystem-depends-on ("lisp-unit")
+  :defsystem-depends-on ("lisp-unit"
+                         "github-api-cl")
   :components ((:file "api-doc-test")
                (:file "client-test")))

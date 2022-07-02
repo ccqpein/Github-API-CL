@@ -61,7 +61,16 @@
                               (car (multiple-value-list
                                     (http-call clt
                                                "http://127.0.0.1:5000"))))
-
+                
+                ;; :content keyword will give the body
+                ;; (assert-equal ""
+                ;;               (progn (http-call clt
+                ;;                                 "http://127.0.0.1:5000"
+                ;;                                 :method "delete")
+                ;;                      (alexandria:doplist (k v env)
+                ;;                        (if (eq k :REQUEST-METHOD)
+                ;;                            (return v)))))
+                
                 ;; give username and passd
                 (setf (github-client::token clt) "") ;; empty token first
                 (assert-equal (format nil "Basic ~a"

@@ -63,13 +63,34 @@
                                                "http://127.0.0.1:5000"))))
                 
                 ;; :content keyword will give the body
-                ;; (assert-equal ""
-                ;;               (progn (http-call clt
-                ;;                                 "http://127.0.0.1:5000"
-                ;;                                 :method "delete")
-                ;;                      (alexandria:doplist (k v env)
-                ;;                        (if (eq k :REQUEST-METHOD)
-                ;;                            (return v)))))
+                (assert-equal "this is content"
+                              (progn (http-call clt
+                                                "http://127.0.0.1:5000"
+                                                :method "post"
+                                                :content "this is content")
+                                     (let* ((content-length (gethash :CONTENT-LENGTH
+                                                                     (alexandria:plist-hash-table env)))
+                                            (content (make-array content-length
+                                                                 :element-type 'flexi-streams:octet)))
+                                       (read-sequence content (gethash :RAW-BODY
+                                                                       (alexandria:plist-hash-table env)))
+                                       (flexi-streams:octets-to-string content)
+                                       )))
+
+                ;; other methods won't give content to server
+                (assert-equal ""
+                              (progn (http-call clt
+                                                "http://127.0.0.1:5000"
+                                                :method "get"
+                                                :content "this is content")
+                                     (let* ((content-length (gethash :CONTENT-LENGTH
+                                                                     (alexandria:plist-hash-table env)))
+                                            (content (make-array content-length
+                                                                 :element-type 'flexi-streams:octet)))
+                                       (read-sequence content (gethash :RAW-BODY
+                                                                       (alexandria:plist-hash-table env)))
+                                       (flexi-streams:octets-to-string content)
+                                       )))
                 
                 ;; give username and passd
                 (setf (github-client::token clt) "") ;; empty token first

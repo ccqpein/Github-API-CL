@@ -33,51 +33,53 @@
 
 (defgeneric http-call (client url &rest args &key method &allow-other-keys))
 
-(defmethod http-call ((clt api-client) url &rest args &key (method "get") &allow-other-keys)
-  (let ((call-func (cond
-                     ((string= (string-downcase method) "get") #'dex:get)
-                     ((string= (string-downcase method) "post") #'dex:post)
-                     ((string= (string-downcase method) "delete") #'dex:delete)
-                     ((string= (string-downcase method) "head") #'dex:head)
-                     ((string= (string-downcase method) "put") #'dex:put)
-                     ((string= (string-downcase method) "patch") #'dex:patch)
-                     ((string= (string-downcase method) "fetch") #'dex:fetch)))
-        )
+(defmethod http-call ((clt api-client) url &rest args &key (method "get") (content "") &allow-other-keys)
+  (let* ((lambda-list '())
+         (call-func (cond
+                      ((string= (string-downcase method) "get") #'dex:get)
+                      ((string= (string-downcase method) "post")
+                       (progn (setf lambda-list
+                                    (append lambda-list (list :content content)))
+                              #'dex:post))
+                      ((string= (string-downcase method) "delete") #'dex:delete)
+                      ((string= (string-downcase method) "head") #'dex:head)
+                      ((string= (string-downcase method) "put") #'dex:put)
+                      ((string= (string-downcase method) "patch") #'dex:patch)
+                      ((string= (string-downcase method) "fetch") #'dex:fetch)))
+         )
     (destructuring-bind
         (&key
            (token (token clt) token-p)
            (user-name "")
            (passd "" passd-p)
            (proxy "" proxy-p)
-           &allow-other-keys)
+         &allow-other-keys)
         args
-      (let ((lambda-list '())
-            )
-        (cond
-          ;; If has token, use token first
-          ;; If has token input, use input token, or use client token
-          ((or token-p (token-p clt))
-           (setf lambda-list
-                 (append lambda-list
-                         (list :headers (list (cons "Authorization"
-                                                    (format nil "token ~a" token)))))))
-          
-          ;; If neither client's token or keyword token is given
-          ;; try use user-name and password
-          (passd-p
-           (setf lambda-list
-                 (append lambda-list
-                         (list :basic-auth (cons user-name passd)))))
+      (cond
+        ;; If has token, use token first
+        ;; If has token input, use input token, or use client token
+        ((or token-p (token-p clt))
+         (setf lambda-list
+               (append lambda-list
+                       (list :headers (list (cons "Authorization"
+                                                  (format nil "token ~a" token)))))))
+        
+        ;; If neither client's token or keyword token is given
+        ;; try use user-name and password
+        (passd-p
+         (setf lambda-list
+               (append lambda-list
+                       (list :basic-auth (cons user-name passd)))))
 
-          ;; give proxy
-          (proxy-p
-           (setf lambda-list
-                 (append lambda-list
-                         (list :proxy proxy :insecure t))))
-          )
+        ;; give proxy
+        (proxy-p
+         (setf lambda-list
+               (append lambda-list
+                       (list :proxy proxy :insecure t))))
+        )
 
-        (apply call-func url lambda-list)
-        ))))
+      (apply call-func url lambda-list)
+      )))
 
 (defgeneric github-api-call (client api &rest args &key &allow-other-keys))
 

@@ -35,11 +35,12 @@
 
 (defmethod http-call ((clt api-client) url &rest args &key (method "get") content &allow-other-keys)
   (let* ((lambda-list '())
+         (headers '())
          (call-func (cond
                       ((string= (string-downcase method) "get") #'dex:get)
                       ((string= (string-downcase method) "post")
-                       (progn (setf lambda-list
-                                    (append lambda-list (list :content content)))
+                       (progn (setf lambda-list (append lambda-list (list :content content)))
+                              (push (cons "Accept" "application/vnd.github+json") headers)
                               #'dex:post))
                       ((string= (string-downcase method) "delete") #'dex:delete)
                       ((string= (string-downcase method) "head") #'dex:head)
@@ -59,24 +60,21 @@
         ;; If has token, use token first
         ;; If has token input, use input token, or use client token
         ((or token-p (token-p clt))
-         (setf lambda-list
-               (append lambda-list
-                       (list :headers (list (cons "Authorization"
-                                                  (format nil "token ~a" token)))))))
+         (push (cons "Authorization"
+                     (format nil "token ~a" token))
+               headers))
         
         ;; If neither client's token or keyword token is given
         ;; try use user-name and password
         (passd-p
-         (setf lambda-list
-               (append lambda-list
-                       (list :basic-auth (cons user-name passd)))))
+         (setf lambda-list (append lambda-list (list :basic-auth (cons user-name passd)))))
 
         ;; give proxy
         (proxy-p
-         (setf lambda-list
-               (append lambda-list
-                       (list :proxy proxy :insecure t))))
+         (setf lambda-list (append lambda-list (list :proxy proxy :insecure t))))
         )
+
+      (setf lambda-list (append lambda-list (list :headers headers)))
 
       (apply call-func url lambda-list)
       )))

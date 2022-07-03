@@ -83,7 +83,7 @@
                                             clt
                                             "http://127.0.0.1:5000"
                                             :method "post"
-                                            '(:content (("key" . "value") ("key1" . 1))))
+                                            '(:content (("key" . "value") ("key1" . 1)))) ;; use apply rather than directly call
                                      (let* ((content-length (gethash :CONTENT-LENGTH
                                                                      (alexandria:plist-hash-table env)))
                                             (content (make-array content-length

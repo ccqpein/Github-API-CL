@@ -77,6 +77,22 @@
                                        (flexi-streams:octets-to-string content)
                                        )))
 
+                ;; :content keyword directly give to dexador
+                (assert-equal "key=value&key1=1"
+                              (progn (apply #'http-call
+                                            clt
+                                            "http://127.0.0.1:5000"
+                                            :method "post"
+                                            '(:content (("key" . "value") ("key1" . 1))))
+                                     (let* ((content-length (gethash :CONTENT-LENGTH
+                                                                     (alexandria:plist-hash-table env)))
+                                            (content (make-array content-length
+                                                                 :element-type 'flexi-streams:octet)))
+                                       (read-sequence content (gethash :RAW-BODY
+                                                                       (alexandria:plist-hash-table env)))
+                                       (flexi-streams:octets-to-string content)
+                                       )))
+
                 ;; other methods won't give content to server
                 (assert-equal ""
                               (progn (http-call clt

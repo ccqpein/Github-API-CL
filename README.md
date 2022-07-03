@@ -70,7 +70,7 @@ After read api.json file, you can generate api instance by using `github-api-doc
 ;;  api: GET /users/:username/repos,
 ;;  http method: GET,
 ;;  slots: (:username),
-;;  fmt-control: (/users/~a /repos)
+;;  fmt-control: (/users/~a/repos)
 ;;  parameters: ((type string) (sort string) (direction string))
 
 ;; OR, you can make instance manually
@@ -120,6 +120,11 @@ With client and api, now we can call api in our code:
 ;;; REPL will ask you to input `:username`, `type`, `sort`, and `direction`
 ;;; Then, it will return the dex:http-response, you can find this MULTIPLE-VALUEs 
 ;;; return format in https://github.com/fukamachi/dexador#following-redirects-get-or-head
+
+;; call POST method api with additional :content keyword
+(github-client:github-api-call *client-without-token*
+                               *api-doc*
+                               :content "this argument pass to dexador directly")
 ```
 
 From now, github-api-cl's job is done, left all http response back to you, you can do whatever you want.
@@ -138,6 +143,8 @@ Wait, if you do not want REPL ask you to input every slots and parameters:
 With keywords input, REPL won't ask you anything, just call `https://api.github.com/users/lisp/repos?type=\"public\"&direction=\"test\"`. 
 
 As example shows, `:username` fills api slot, `:type` & `:direction` fill parameters, `:neither-slots-nor-parameter` is useless in this api. 
+
+For `POST` method api, `:content` is the keyword for add the content. It pass to `:content` keyword of `dexador`'s `POST` [method](https://github.com/fukamachi/dexador#function-post).
 
 ### Authorization ###
 

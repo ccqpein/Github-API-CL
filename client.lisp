@@ -33,7 +33,7 @@
 
 (defgeneric http-call (client url &rest args &key method &allow-other-keys))
 
-(defmethod http-call ((clt api-client) url &rest args &key (method "get") (content "") &allow-other-keys)
+(defmethod http-call ((clt api-client) url &rest args &key (method "get") content &allow-other-keys)
   (let* ((lambda-list '())
          (call-func (cond
                       ((string= (string-downcase method) "get") #'dex:get)

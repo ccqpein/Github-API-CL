@@ -77,6 +77,15 @@
                                        (flexi-streams:octets-to-string content)
                                        )))
 
+                ;; check the accept headers
+                (assert-equal "application/vnd.github+json"
+                              (progn (http-call clt
+                                                "http://127.0.0.1:5000"
+                                                :method "post"
+                                                :content "this is content")
+                                     (gethash "accept" (gethash :headers (alexandria:plist-hash-table env)))
+                                     ))
+
                 ;; :content keyword directly give to dexador
                 (assert-equal "key=value&key1=1"
                               (progn (apply #'http-call

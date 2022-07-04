@@ -35,12 +35,11 @@
 
 (defmethod http-call ((clt api-client) url &rest args &key (method "get") content &allow-other-keys)
   (let* ((lambda-list '())
-         (headers '())
+         (headers '(("Accept" . "application/vnd.github+json"))) ;; give this header anyway
          (call-func (cond
                       ((string= (string-downcase method) "get") #'dex:get)
                       ((string= (string-downcase method) "post")
                        (progn (setf lambda-list (append lambda-list (list :content content)))
-                              (push (cons "Accept" "application/vnd.github+json") headers)
                               #'dex:post))
                       ((string= (string-downcase method) "delete") #'dex:delete)
                       ((string= (string-downcase method) "head") #'dex:head)
@@ -86,8 +85,11 @@
                             &rest args)
   (let* ((url (apply #'make-call-url api args))
          (parameters (apply #'make-call-parameters api args))
-         (whole-url (concatenate 'string url parameters)))
-    (apply #'http-call clt whole-url
+         (whole-url (concatenate 'string url parameters))
+         )
+    (apply #'http-call
+           clt
+           whole-url
            :method (http-method api)
            args)
     ))

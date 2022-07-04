@@ -58,7 +58,8 @@ object"
    (parameters
     :initarg :parameters
     :type cons
-    :accessor parameters)))
+    :accessor parameters)
+   ))
 
 (defmethod initialize-instance :after ((api api-doc) &key)
   (let ((api-detail (parse-api (api api))))
@@ -109,8 +110,7 @@ object"
   slots: ~a,
   fmt-control: ~a
   parameters: ~a"
-          (api api) (http-method api) (slots api) (control-str api) (parameters api)
-          ))
+          (api api) (http-method api) (slots api) (control-str api) (parameters api)))
 
 (defgeneric make-call-url (api &rest args &key &allow-other-keys)
   (:documentation "Return the url of this api http call"))

@@ -77,6 +77,19 @@
                                        (flexi-streams:octets-to-string content)
                                        )))
 
+                (assert-equal ""
+                              (progn (http-call clt
+                                                "http://127.0.0.1:5000"
+                                                :method "post") ;; empty content
+                                     (let* ((content-length (gethash :CONTENT-LENGTH
+                                                                     (alexandria:plist-hash-table env)))
+                                            (content (make-array content-length
+                                                                 :element-type 'flexi-streams:octet)))
+                                       (read-sequence content (gethash :RAW-BODY
+                                                                       (alexandria:plist-hash-table env)))
+                                       (flexi-streams:octets-to-string content)
+                                       )))
+
                 ;; check the accept headers
                 (assert-equal "application/vnd.github+json"
                               (progn (http-call clt
@@ -87,14 +100,15 @@
                                      ))
 
                 ;; check the given headers 
-                (assert-equal "b"
-                              (progn (http-call clt
-                                                "http://127.0.0.1:5000"
-                                                :method "post"
-                                                :content "this is content"
-                                                :headers '(("a" . "b")))
-                                     (gethash "a" (gethash :headers (alexandria:plist-hash-table env)))
-                                     ))
+                (http-call clt
+                           "http://127.0.0.1:5000"
+                           :method "post"
+                           :content "this is content"
+                           :headers '(("a" . "b")))
+                (assert-equal "b" (gethash "a" (gethash :headers (alexandria:plist-hash-table env))))
+                (assert-equal "application/vnd.github+json"
+                              (gethash "accept" (gethash :headers (alexandria:plist-hash-table env))))
+                
 
                 ;; :content keyword directly give to dexador
                 (assert-equal "key=value&key1=1"

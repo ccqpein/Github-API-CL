@@ -86,6 +86,16 @@
                                      (gethash "accept" (gethash :headers (alexandria:plist-hash-table env)))
                                      ))
 
+                ;; check the given headers 
+                (assert-equal "b"
+                              (progn (http-call clt
+                                                "http://127.0.0.1:5000"
+                                                :method "post"
+                                                :content "this is content"
+                                                :headers '(("a" . "b")))
+                                     (gethash "a" (gethash :headers (alexandria:plist-hash-table env)))
+                                     ))
+
                 ;; :content keyword directly give to dexador
                 (assert-equal "key=value&key1=1"
                               (progn (apply #'http-call

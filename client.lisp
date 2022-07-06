@@ -33,9 +33,9 @@
 
 (defgeneric http-call (client url &rest args &key method &allow-other-keys))
 
-(defmethod http-call ((clt api-client) url &rest args &key (method "get") content &allow-other-keys)
+(defmethod http-call ((clt api-client) url &rest args &key (method "get") content headers &allow-other-keys)
+  (push '("Accept" . "application/vnd.github+json") headers)
   (let* ((lambda-list '())
-         (headers '(("Accept" . "application/vnd.github+json"))) ;; give this header anyway
          (call-func (cond
                       ((string= (string-downcase method) "get") #'dex:get)
                       ((string= (string-downcase method) "post")

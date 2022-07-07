@@ -124,8 +124,11 @@ With client and api, now we can call api in our code:
 ;; call POST method api with additional :content keyword
 (github-client:github-api-call *client-without-token*
                                *api-doc*
+                               :headers '((header0 . value0) (header1 . value1))
                                :content "this argument pass to dexador directly")
 ```
+
+`github-api-call` will call api with the default headers `'(("Accept" . "application/vnd.github+json"))`. Any other headers pass to `:headers` will been added `("Accept" . "application/vnd.github+json")`.
 
 From now, github-api-cl's job is done, left all http response back to you, you can do whatever you want.
 

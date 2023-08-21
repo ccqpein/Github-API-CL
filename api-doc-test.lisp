@@ -43,6 +43,13 @@ true
     ;; input by keywords
     (assert-equal "?name=aa&private=true&team_id=1"
                   (make-call-parameters api-doc :name "aa" :private "true" :team_id 1))
+
+	;; empty parameters
+	(progn (setf api-doc (make-instance 'api-doc
+                                :api "POST /user/repos"
+								:parameters '()))
+		   (assert-equal ""
+                  (make-call-parameters api-doc :some "a")))
     ))
 
 (define-test make-call-url-test

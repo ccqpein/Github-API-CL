@@ -16,7 +16,7 @@ I use [yason](https://github.com/phmarek/yason) for json parser, [dexador](https
 
 ### Install ###
 
-This repo haven't deploy to quicklisp yet, but you can git clone to `quicklisp/local-projects` folder and `(ql:quickload "github-api-cl")`
+This repo have deploied to quicklisp yet, you can just `(ql:quickload "github-api-cl")`
 
 ### Read api.json file ###
 
@@ -145,9 +145,9 @@ Wait, if you do not want REPL ask you to input every slots and parameters:
 
 With keywords input, REPL won't ask you anything, just call `https://api.github.com/users/lisp/repos?type=\"public\"&direction=\"test\"`. 
 
-As example shows, `:username` fills api slot, `:type` & `:direction` fill parameters, `:neither-slots-nor-parameter` is useless in this api. 
+As example shows, `:username` fills **api slot**, `:type` & `:direction` fill **parameters**, `:neither-slots-nor-parameter` is useless in this api. 
 
-For `POST` method api, `:content` is the keyword for add the content. It pass to `:content` keyword of `dexador`'s `POST` [method](https://github.com/fukamachi/dexador#function-post).
+For `POST` method api, `:content` is the keyword for add the content. It pass to `:content` keyword of `dexador`'s `POST` [method](https://github.com/fukamachi/dexador#function-post). Check `./example/github-gist-cl` to find how to create the gist.
 
 ### Authorization ###
 

@@ -1,14 +1,14 @@
 # README #
 
-This repo is the lite Github rest v3 api client. 
+This repo is a simple client for the GitHub Rest V3 API. 
 
-Because I cannot find the whole Github rest api in one file, just several documents pages. So you might need to add api details by yourself into json file. api.json is the example.
+I didn't find a full API on one page, so I gathered it from many pages. You might have to put API details into a JSON file yourself. Check out `api.json` to see how.
 
-Documents link is [here](https://developer.github.com/v3/)
+You can find the documents [here](https://developer.github.com/v3/).
 
-## Usage ##
+## How to Use ##
 
-You can check `./example`
+Please refer to `./example`
 
 ### Dependencies ###
 
@@ -16,7 +16,7 @@ I use [yason](https://github.com/phmarek/yason) for json parser, [dexador](https
 
 ### Install ###
 
-This repo have deploied to quicklisp yet, you can just `(ql:quickload "github-api-cl")`
+This repo has already been deployed to quicklisp. You can simply use `(ql:quickload "github-api-cl")` to install it.
 
 ### Read api.json file ###
 
@@ -81,7 +81,7 @@ After read api.json file, you can generate api instance by using `github-api-doc
                                              ("direction" "string")))
 ```
 
-`api.json` is pretty flexible because it just a json file. So you don't have to follow Github api structure if you don't want to. Only part of api.json does `github-api-cl` care about is this part:
+The `api.json` file is very flexible as it's just a JSON file. You don't have to stick to the GitHub API structure if you don't want to. The only part that `github-api-cl` is concerned with is this section:
 
 ```json
 {
@@ -130,7 +130,7 @@ With client and api, now we can call api in our code:
 
 `github-api-call` will call api with the default headers `'(("Accept" . "application/vnd.github+json"))`. Any other headers pass to `:headers` will been added `("Accept" . "application/vnd.github+json")`.
 
-From now, github-api-cl's job is done, left all http response back to you, you can do whatever you want.
+From now, `github-api-cl`'s job is done, left all http response back to you, you can do whatever you want.
 
 Wait, if you do not want REPL ask you to input every slots and parameters:
 
@@ -145,18 +145,18 @@ Wait, if you do not want REPL ask you to input every slots and parameters:
 
 With keywords input, REPL won't ask you anything, just call `https://api.github.com/users/lisp/repos?type=\"public\"&direction=\"test\"`. 
 
-As example shows, `:username` fills **api slot**, `:type` & `:direction` fill **parameters**, `:neither-slots-nor-parameter` is useless in this api. 
+As example shows, `:username` fills **api slot**, `:type` & `:direction`  are used for **parameters**. Meanwhile `:neither-slots-nor-parameter` doesn't play any role in this API.
 
 For `POST` method api, `:content` is the keyword for add the content. It pass to `:content` keyword of `dexador`'s `POST` [method](https://github.com/fukamachi/dexador#function-post). Check `./example/github-gist-cl` to find how to create the gist.
 
 ### Authorization ###
 
-**Token, user-name&passd**
+**Token, user-name, and passd**
 
-When you need authorization, you can put `:token`, `:user-name` and `:passd` in `github-client:github-api-call` as keywords. 
+When you need authorization, you can include `:token`, `:user-name` and `:passd` in `github-client:github-api-call` as keywords. 
 
-Check logic is below :
+Here's how it works:
 
-+ If you input `:token`, will use token you input
++ If you input `:token`, will use token you provided
 + If no `:token` given but client has token already, it will use token stored in client
 + If neither `:token` nor client's token is given, but has `:passd` keyword, will use `:user-name` & `passd` as authorization. (I just assume you give `:user-name` too, when you give `:passd`)
